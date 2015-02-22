@@ -27,7 +27,7 @@ class ASCIIToMapASM
 		}
 	end
 
-	# Make sure file is saved in ASCII/DOS mode!
+	# Make sure file is saved in ASCII/DOS mode (or don't use extended ASCII set/window frame characters)
 	def read_slide(filename="slide.txt")
 		raise "File #{filename} not found" unless File.exist?(filename)
 		processed_lines = []
