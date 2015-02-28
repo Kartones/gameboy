@@ -14,15 +14,12 @@ at a time. As editing inside a Tile Editor like GBTB is tiring for simple text, 
 plain text files to .INC files that have Assembler code defining the backgrounds (BG had no "files", everything was inside the ROM).
 
 This is a samll demo of how it works:
-
 ![Sample presentation inside VisualBoyAdvance](http://www.comomonos.com/up/wip_25_feb_2015.gif)
 
 The "real" presentation is available at:
-
-**To be added when slides are ready**
+[slides.kartones.net](http://slides.kartones.net/023.htm)
 
 And as was hard to gather all tools and documentation, I've setup a zip containing a nice development toolset at:
-
 [kartones.net/Downloads/gbdevpack.zip](http://kartones.net/Downloads/gbdevpack.zip)
 
 # Usage #
