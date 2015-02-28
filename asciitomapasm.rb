@@ -9,6 +9,7 @@ class ASCIIToMapASM
 	MAX_ROWS = 18
 	MAX_COLS = 20
 	ASM_VALUES_PER_LINE = 10
+	DEFAULT_CHARACTER_TILE_NUM = 0
 
 	def initialize
 		@tiles_mapping = {}
@@ -21,21 +22,22 @@ class ASCIIToMapASM
 		puts "Add the following to your ASM code:" unless valid_files.length == 0
 		valid_files.each { |filename|
 			output_filename = [filename.split('.').first, "inc"].join('.').upcase
-			data = read_slide(filename)
+			data = read_slide(filename, directory)
 			store(data, output_filename)
 			puts "INCLUDE	\"#{output_filename}\""
 		}
 	end
 
 	# Make sure file is saved in ASCII/DOS mode (or don't use extended ASCII set/window frame characters)
-	def read_slide(filename="slide.txt")
-		raise "File #{filename} not found" unless File.exist?(filename)
+	def read_slide(filename="slide.txt", directory=".")
+		filepath = File.join(directory,filename)
+		raise "File #{filename} not found" unless File.exist?(filepath)
 		processed_lines = []
 		count = 0
 
-		file = File.open(filename, "r")
+		file = File.open(filepath, "r")
 		while (line = file.gets)
-			raise "File #{filename} exceeds maximum row size (#{MAX_ROWS})"  if count > MAX_ROWS
+			raise "File #{filepath} exceeds maximum row size (#{MAX_ROWS})"  if count > MAX_ROWS
 			count += 1
 			processed_lines.push(process_line(line.force_encoding(Encoding::ASCII_8BIT), count))
 		end
@@ -113,8 +115,8 @@ class ASCIIToMapASM
 	end
 
 	def process_character(char)
-		output_char = @tiles_mapping.fetch(char.upcase, 0)
-		"%02x" % (output_char > 0 ? output_char : window_char(char))
+		output_char = @tiles_mapping.fetch(char.upcase, DEFAULT_CHARACTER_TILE_NUM)
+		"%02x" % (output_char != DEFAULT_CHARACTER_TILE_NUM ? output_char : window_char(char))
 	end
 
 	# Can't use non-US ASCII (7bit) characters as hash keys, so use a function
@@ -134,7 +136,7 @@ class ASCIIToMapASM
 			when 192	# lower left corner
 				75
 		else
-			0
+			DEFAULT_CHARACTER_TILE_NUM
 		end
 	end
 
@@ -175,5 +177,5 @@ end
 
 
 begin
-  generator = ASCIIToMapASM.new.create_slides
+  generator = ASCIIToMapASM.new.create_slides("slides")
 end

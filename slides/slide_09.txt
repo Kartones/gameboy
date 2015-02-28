@@ -1,0 +1,11 @@
+Memory
+
+$FF00
+Port/Mode, control
+& sound registers
+
+$FF80
+Stack RAM (127bit)
+
+$FFFF
+- Memory end -

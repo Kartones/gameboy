@@ -1,0 +1,13 @@
+Flags (F)
+
+Zero       0x80
+Operation  0x40
+Half-Carry 0x20
+Carry      0x10
+
+Op. = 1 if last op
+was a substraction
+
+Carry flagging:
+Above 255 if sum.
+Below 0 if sub.

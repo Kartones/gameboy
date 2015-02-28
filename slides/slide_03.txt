@@ -1,0 +1,9 @@
+Objects - Sprites
+
+X coord
+Y coord
+Tile number
+Attr data:
+- Palette
+- X-Flipped
+- Y-Flipped

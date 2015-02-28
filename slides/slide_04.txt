@@ -1,0 +1,18 @@
+Int. Specs
+
+Up to 256 BGs +
+
+Up to 256 8x8 OBJs |
+Up to 128 8x16 OBJs
+
++ 128 either BG/OBJ
+
+
+1 Palette for BGs
+4 colors
+
+2 Palettes for OBJs
+3 colors + transp.
+
+8 bits Serial I/O
+6 input, 2 output

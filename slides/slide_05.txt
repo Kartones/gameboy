@@ -1,0 +1,13 @@
+Registers
+
+A,B,C,D,E,H,L
+PC,SP,F,IE,IF
+
+16 bit grouping:
+BC, DE, HL
+
+2 clocks: M, T
+M = cycle
+T = M-times
+
+1 instruction = 4M
