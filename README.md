@@ -13,7 +13,7 @@ The result is `gbslides.asm` file, a small slide viewer. It uses gameboy Maps/Ba
 at a time. As editing inside a Tile Editor like GBTB is tiring for simple text, I also made a script that transforms from
 plain text files to .INC files that have Assembler code defining the backgrounds (BG had no "files", everything was inside the ROM).
 
-This is a samll demo of how it works:
+Small demo:
 ![Sample presentation inside VisualBoyAdvance](http://www.comomonos.com/up/wip_25_feb_2015.gif)
 
 The "real" presentation is available at:
