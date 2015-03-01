@@ -1,0 +1,17 @@
+Input
+
+$FF00
+
+P10-P13 Input
+P14-P15 Output
+P16-P17 Unused
+
+Inverted: 0 pulled
+          1 pushed
+
+     P14   P15
+      ³    ³
+P10ÄÄÄRÄÄÄ AÄÄÄ
+P11ÄÄÄLÄÄÄ BÄÄÄ
+P12ÄÄÄUÄÄÄSEÄÄÄ
+P13ÄÄÄDÄÄÄSTÄÄÄ

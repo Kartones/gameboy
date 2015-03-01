@@ -1,16 +1,15 @@
-Memory
+Int. Specs
 
-$A000
-Expansion RAM 8KB
+Up to 256 BGs
+Up to 256 8x8 OBJs |
+Up to 128 8x16 OBJs
+(128 either BG/OBJ)
 
-$C000
-Working Ram 8KB
+1 Palette for BGs
+4 colors
 
-$E000 - $FE00
-Internal, don't use
+2 Palettes for OBJs
+3 colors + transp.
 
-$FE00
-OAM (40 OBJ)
-
-$FE00 - $FF00
-Internal, don't use
+8 bits Serial I/O
+6 input, 2 output

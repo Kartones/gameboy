@@ -1,13 +1,7 @@
-Registers
+BGs/Maps
 
-A,B,C,D,E,H,L
-PC,SP,F,IE,IF
+Up to 32x32 tiles
 
-16 bit grouping:
-BC, DE, HL
+Bigger than screen
+ to allow scrolling
 
-2 clocks: M, T
-M = cycle
-T = M-times
-
-1 instruction = 4M

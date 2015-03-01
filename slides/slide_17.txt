@@ -1,0 +1,15 @@
+Sound
+
+4 channels
+
+-Rectangle waveform
+ with sweep and
+ envelope functions
+-Rectangle waveform
+ with envelope f.
+-RAM read waveform
+ 4 bits x 32 steps
+-White noise gen.
+ with envelope f.
+
+ No volume (on/off)

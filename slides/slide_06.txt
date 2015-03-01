@@ -1,13 +1,16 @@
-Flags (F)
+Display
 
-Zero       0x80
-Operation  0x40
-Half-Carry 0x20
-Carry      0x10
+ÚÄÄÄÄÄÄÄÄ¿ÄÄÄÄÄÄ¿
+³        ³      ³
+³ 20x18  ³      ³
+³        ³      ³
+ÀÄÄÄÄÄÄÄÄÙ      ³
+³               ³
+³ 32x32         ³
+ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 
-Op. = 1 if last op
-was a substraction
-
-Carry flagging:
-Above 255 if sum.
-Below 0 if sub.
+-Tile based
+-Paints only BG or
+ OBJ data
+-OBJs use X/Y coords
+-BG uses X/Y scroll

@@ -1,18 +1,18 @@
-Int. Specs
+Objects
 
-Up to 256 BGs +
+Sprite data
 
-Up to 256 8x8 OBJs |
-Up to 128 8x16 OBJs
+4 bytes of info:
+-X coord
+-Y coord
+-Tile number
+-Attr data
+ - Tile bank number
+ - X-Flipped
+ - Y-Flipped
+ - Display priority
+ - 4bits only used
+   by GBC (palette)
 
-+ 128 either BG/OBJ
-
-
-1 Palette for BGs
-4 colors
-
-2 Palettes for OBJs
-3 colors + transp.
-
-8 bits Serial I/O
-6 input, 2 output
+If 8x16, Tile num.
+ is always even

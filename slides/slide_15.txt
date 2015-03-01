@@ -1,0 +1,15 @@
+Interrupts
+
+IE: Enable
+DI: Disable
+
+$0040 VBlank
+$0048 LCDC Status
+$0050 Timer Overflow
+$0058 Serial transf.
+      completed
+$0060 Joypad int.
+
+If multiple at once,
+ IF set correctly,
+ only highest starts

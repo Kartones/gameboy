@@ -75,19 +75,19 @@ PALETTE_SPRITE_1				EQU		$49		; sprite palette 1 data
 POS_WINDOW_Y						EQU		$4A		; window tile map Y position
 POS_WINDOW_X						EQU		$4B		; window tile map X position
 
-INTERRUPT_ENABLE				EQU		$ff		; Interrupt Enable
+INTERRUPT_ENABLE				EQU		$FF		; Interrupt Enable
 
 ; $ff80 to $fffe is 128 bytes of internal RAM
-STACK_TOP								EQU		$fff4		; put the stack here
+STACK_TOP								EQU		$FFF4		; put the stack here
 
 ; video ram display locations
 TILES_MEM_LOC_0					EQU		$8800		; tile map tiles only
 TILES_MEM_LOC_1					EQU		$8000		; tile maps and sprite tiles
 
 MAP_MEM_LOC_0						EQU		$9800		; background and window tile maps
-MAP_MEM_LOC_1						EQU		$9c00		; (select which uses what mem loc in LCDC_CONTROL register)
+MAP_MEM_LOC_1						EQU		$9C00		; (select which uses what mem loc in LCDC_CONTROL register)
 
-SPRITE_ATTRIB_MEM_LOC		EQU		$fe00		; OAM memory (sprite attributes)
+SPRITE_ATTRIB_MEM_LOC		EQU		$FE00		; OAM memory (sprite attributes)
 
 ; Sprite attribute flags
 SPRITE_FLAGS_PAL				EQU		%00010000	; palette (0=sprite pal 0, 1=sprite pal 1)
@@ -97,34 +97,34 @@ SPRITE_FLAGS_PRIORITY		EQU		%10000000	; sprite display priority (0=on top bkg & 
 
 ; Start of the ROM
 ;-------------------------------------------------------------------------
-SECTION	"ROM_Start",HOME[$0000]
+SECTION	"ROM_Start", HOME[$0000]
 
-; NOTE: the hardware rEQUires the interrupt jumps to be at these addresses
+; NOTE: the hardware requires the interrupt jumps to be at these addresses
 
 ; Vertical Blanking interrupt
-SECTION	"VBlank_IRQ_Jump",HOME[$0040]
-	JP	VBlankFunc
+SECTION	"VBlank_IRQ_Jump", HOME[$0040]
+	JP	VBLANK
 
 ; LCDC Status interrupt (can be set for H-Blanking interrupt)
-SECTION	"LCDC_IRQ_Jump",HOME[$0048]
+SECTION	"LCDC_IRQ_Jump", HOME[$0048]
 	RETI
 
 ; Main Timer Overflow interrupt
-SECTION	"Timer_Overflow_IRQ_Jump",HOME[$0050]
+SECTION	"Timer_Overflow_IRQ_Jump", HOME[$0050]
 	RETI
 
 ; Serial Transfer Completion interrupt
-SECTION	"Serial_IRQ_Jump",HOME[$0058]
+SECTION	"Serial_IRQ_Jump", HOME[$0058]
 	RETI
 
 ; Joypad Button Interrupt?????
-SECTION	"Joypad_IRQ_Jump",HOME[$0060]
+SECTION	"Joypad_IRQ_Jump", HOME[$0060]
 	RETI
 
 SECTION	"GameBoy_Header_Start", HOME[$0100]
 ; begining of Game Boy game header
 	NOP
-	JP 		$150         ; goto beginning of game code
+	JP  	$150         ; goto beginning of game code
 
 ; Game Boy standard header... Don't touch
 DB $CE,$ED,$66,$66,$CC,$0D,$00,$0B,$03,$73,$00,$83,$00,$0C,$00,$0D
@@ -142,8 +142,6 @@ DB $00								; Complement check (handled by RGBFIX)
 DB $00,$00						; Cartridge checksum (handled by RGBFIX)
 
 
-; Real code starts here
-; ---------------------
 SECTION	"Game_Code_Start", HOME[$0150]
 START::
 	; init the stack pointer
@@ -154,19 +152,19 @@ START::
 	LDH		[INTERRUPT_ENABLE], A	; load it to the hardware register
 
 	; standard inits
-	sub		A									;	a = 0
+	SUB		A									;	a = 0
 	LDH		[LCDC_STATUS], A	; init status
 	LDH		[LCDC_CONTROL], A	; init LCD to everything off
 
-	LD		A, 0
+	LD		A, 		0
 	LD		[vblank_flag], A
 
 	; Custom variable inits
-	LD 		A, 0
+	LD 		A, 		0
 	LD 		[current_slide], A
 
 	; ------------------------------------------
-	LD 		A, 10 								; Total slides. Real slides count - 1 (zero-index)
+	LD 		A, 		18 								; Total slides. Real slides count - 1 (zero-index)
 	LD 		[total_slides], A
 	; ------------------------------------------
 
@@ -176,45 +174,47 @@ START::
 
 	; set display to on, background on, window off, sprites on, sprite size 8x8
 	;	tiles at $8000, background map at $9800, window map at $9C00
-	LD		A, DISPLAY_FLAG | BKG_DISP_FLAG | SPRITE_DISP_FLAG | TILES_LOC | WINDOW_MAP_LOC
+	LD		A, 		DISPLAY_FLAG | BKG_DISP_FLAG | SPRITE_DISP_FLAG | TILES_LOC | WINDOW_MAP_LOC
 	LDH		[LCDC_CONTROL], A
 
 	; allow interrupts to start occuring
-	ei
+	EI
 
-Game_Loop::
+
+GAME_LOOP::
 	; don't do a frame update unless we have had a vblank
-	LD		A, [vblank_flag]
+	LD		A, 		[vblank_flag]
 	CP		0
-	JP		Z, .end_game_loop
+	JP		Z, 		.END_GAME_LOOP
 
 	CALL	READ_INPUT
 	CALL	HANDLE_INPUT
 
 	; reset vblank flag
-	LD		A, 0
+	LD		A, 		0
 	LD		[vblank_flag], A
 
-.end_game_loop
-	JP		Game_Loop
+.END_GAME_LOOP
+	JP		GAME_LOOP
 
 
 INIT_PALETTES::
-	LD		A, %11100100	; dark -> light
+	LD		A, 		%11100100	; dark -> light
 	; load it to all the palettes
-	LDH		[PALETTE_BKG], A
+	LDH		[PALETTE_BKG], 			A
 	LDH		[PALETTE_SPRITE_0], A
 	LDH		[PALETTE_SPRITE_1], A
 	RET
+
 
 LOAD_TILES::
 	LD		HL, 	TILESET_DATA
 	LD		DE, 	TILES_MEM_LOC_1
 	LD		BC,		77*16		; 77 tiles x 16 bytes each
 LOAD_TILES_LOOP::
-	LDH		A, [LCDC_STATUS]	; get the status
+	LDH		a, 		[LCDC_STATUS]	; get the status
 	AND		SPRITE_MODE			; don't write during sprite and transfer modes
-	JP		NZ, LOAD_TILES_LOOP
+	JP		NZ, 	LOAD_TILES_LOOP
 	LD		A, 		[HL+]		; get byte from tile data
 	LD		[DE], A				; put it in VRAM
 	INC		DE
@@ -225,80 +225,134 @@ LOAD_TILES_LOOP::
 	RET
 
 
-
-
 LOAD_MAP::
-	LD		A, [current_slide]
+	LD		A, 		[current_slide]
 	SUB 	0
-	JP 		NZ, SELECT_LOAD_SLIDE_01
+	JP 		NZ, 	.SELECT_LOAD_SLIDE_01
 
 	LD		HL, 	INTRO_SLIDE_DATA
 	JP 		.LOAD_SLIDE_DATA
 
-SELECT_LOAD_SLIDE_01::
+.SELECT_LOAD_SLIDE_01
 	SUB 	1
-	JP 		NZ, SELECT_LOAD_SLIDE_02
+	JP 		NZ, 	.SELECT_LOAD_SLIDE_02
 
 	LD		HL, 	SLIDE_01_DATA
 	JP 		.LOAD_SLIDE_DATA
 
-SELECT_LOAD_SLIDE_02::
+.SELECT_LOAD_SLIDE_02
 	SUB 	1
-	JP 		NZ, SELECT_LOAD_SLIDE_03
+	JP 		NZ, 	.SELECT_LOAD_SLIDE_03
 
 	LD		HL, 	SLIDE_02_DATA
 	JP 		.LOAD_SLIDE_DATA
 
-SELECT_LOAD_SLIDE_03::
+.SELECT_LOAD_SLIDE_03
 	SUB 	1
-	JP 		NZ, SELECT_LOAD_SLIDE_04
+	JP 		NZ, 	.SELECT_LOAD_SLIDE_04
 
 	LD		HL, 	SLIDE_03_DATA
 	JP 		.LOAD_SLIDE_DATA
 
-SELECT_LOAD_SLIDE_04::
+.SELECT_LOAD_SLIDE_04
 	SUB 	1
-	JP 		NZ, SELECT_LOAD_SLIDE_05
+	JP 		NZ, 	.SELECT_LOAD_SLIDE_05
 
 	LD		HL, 	SLIDE_04_DATA
 	JP 		.LOAD_SLIDE_DATA
 
-SELECT_LOAD_SLIDE_05::
+.SELECT_LOAD_SLIDE_05
 	SUB 	1
-	JP 		NZ, SELECT_LOAD_SLIDE_06
+	JP 		NZ, 	.SELECT_LOAD_SLIDE_06
 
 	LD		HL, 	SLIDE_05_DATA
 	JP 		.LOAD_SLIDE_DATA
 
-SELECT_LOAD_SLIDE_06::
+.SELECT_LOAD_SLIDE_06
 	SUB 	1
-	JP 		NZ, SELECT_LOAD_SLIDE_07
+	JP 		NZ, 	.SELECT_LOAD_SLIDE_07
 
 	LD		HL, 	SLIDE_06_DATA
 	JP 		.LOAD_SLIDE_DATA
 
-SELECT_LOAD_SLIDE_07::
+.SELECT_LOAD_SLIDE_07
 	SUB 	1
-	JP 		NZ, SELECT_LOAD_SLIDE_08
+	JP 		NZ, 	.SELECT_LOAD_SLIDE_08
 
 	LD		HL, 	SLIDE_07_DATA
 	JP 		.LOAD_SLIDE_DATA
 
-SELECT_LOAD_SLIDE_08::
+.SELECT_LOAD_SLIDE_08
 	SUB 	1
-	JP 		NZ, SELECT_LOAD_SLIDE_09
+	JP 		NZ, 	.SELECT_LOAD_SLIDE_09
 
 	LD		HL, 	SLIDE_08_DATA
 	JP 		.LOAD_SLIDE_DATA
 
-SELECT_LOAD_SLIDE_09::
+.SELECT_LOAD_SLIDE_09
 	SUB 	1
-	JP 		NZ, SELECT_LOAD_SLIDE_99
+	JP 		NZ, 	.SELECT_LOAD_SLIDE_10
 
 	LD		HL, 	SLIDE_09_DATA
 	JP 		.LOAD_SLIDE_DATA
 
-SELECT_LOAD_SLIDE_99::
+.SELECT_LOAD_SLIDE_10
+	SUB 	1
+	JP 		NZ, 	.SELECT_LOAD_SLIDE_11
+
+	LD		HL, 	SLIDE_10_DATA
+	JP 		.LOAD_SLIDE_DATA
+
+.SELECT_LOAD_SLIDE_11
+	SUB 	1
+	JP 		NZ, 	.SELECT_LOAD_SLIDE_12
+
+	LD		HL, 	SLIDE_11_DATA
+	JP 		.LOAD_SLIDE_DATA
+
+.SELECT_LOAD_SLIDE_12
+	SUB 	1
+	JP 		NZ, 	.SELECT_LOAD_SLIDE_13
+
+	LD		HL, 	SLIDE_12_DATA
+	JP 		.LOAD_SLIDE_DATA
+
+.SELECT_LOAD_SLIDE_13
+	SUB 	1
+	JP 		NZ, 	.SELECT_LOAD_SLIDE_14
+
+	LD		HL, 	SLIDE_13_DATA
+	JP 		.LOAD_SLIDE_DATA
+
+.SELECT_LOAD_SLIDE_14
+	SUB 	1
+	JP 		NZ, 	.SELECT_LOAD_SLIDE_15
+
+	LD		HL, 	SLIDE_14_DATA
+	JP 		.LOAD_SLIDE_DATA
+
+.SELECT_LOAD_SLIDE_15
+	SUB 	1
+	JP 		NZ, 	.SELECT_LOAD_SLIDE_16
+
+	LD		HL, 	SLIDE_15_DATA
+	JP 		.LOAD_SLIDE_DATA
+
+.SELECT_LOAD_SLIDE_16
+	SUB 	1
+	JP 		NZ, 	.SELECT_LOAD_SLIDE_17
+
+	LD		HL, 	SLIDE_16_DATA
+	JP 		.LOAD_SLIDE_DATA
+
+.SELECT_LOAD_SLIDE_17
+	SUB 	1
+	JP 		NZ, 	.SELECT_LOAD_SLIDE_99
+
+	LD		HL, 	SLIDE_17_DATA
+	JP 		.LOAD_SLIDE_DATA
+
+.SELECT_LOAD_SLIDE_99
 	LD		HL, 	SLIDE_99_DATA
 
 .LOAD_SLIDE_DATA
@@ -340,43 +394,43 @@ SELECT_LOAD_SLIDE_99::
 ;-----------------------------------------------------------------------
 READ_INPUT::
 	; get the d-pad buttons
-	LD		A, PAD_PORT_DPAD			; select d-pad
-	LDH		[JOYPAD_REGISTER], A	; send it to the joypad
-	LDH		A, [JOYPAD_REGISTER]
-	LDH		A, [JOYPAD_REGISTER]
-	LDH		A, [JOYPAD_REGISTER]
-	LDH		A, [JOYPAD_REGISTER]
-	LDH		A, [JOYPAD_REGISTER]
-	LDH		A, [JOYPAD_REGISTER]	; get the result back (takes a few cycles)
-	CPL			; bit-flip the result
+	LD		A, 		PAD_PORT_DPAD			; select d-pad
+	LDH		[JOYPAD_REGISTER], A		; send it to the joypad
+	LDH		A, 		[JOYPAD_REGISTER]
+	LDH		A, 		[JOYPAD_REGISTER]
+	LDH		A, 		[JOYPAD_REGISTER]
+	LDH		A, 		[JOYPAD_REGISTER]
+	LDH		A, 		[JOYPAD_REGISTER]
+	LDH		A, 		[JOYPAD_REGISTER]	; get the result back (takes a few cycles)
+	CPL							; bit-flip the result
 	AND		PAD_OUTPUT_MASK		; mask out the output bits
 	SWAP	A					; put the d-pad button results to top nibble
-	LD		B, A				; and store it
+	LD		B, 		A		; and store it
 
 	; get A / B / SELECT / START buttons
-	LD		A, PAD_PORT_BUTTONS		; select buttons
-	LDH		[JOYPAD_REGISTER], A	; send it to the joypad
-	LDH		A, [JOYPAD_REGISTER]
-	LDH		A, [JOYPAD_REGISTER]
-	LDH		A, [JOYPAD_REGISTER]
-	LDH		A, [JOYPAD_REGISTER]
-	LDH		A, [JOYPAD_REGISTER]
-	LDH		A, [JOYPAD_REGISTER]	; get the result back (takes even more cycles?)
-	CPL			; bit-flip the result
+	LD		A, 		PAD_PORT_BUTTONS	; select buttons
+	LDH		[JOYPAD_REGISTER], A		; send it to the joypad
+	LDH		A, 		[JOYPAD_REGISTER]
+	LDH		A, 		[JOYPAD_REGISTER]
+	LDH		A, 		[JOYPAD_REGISTER]
+	LDH		A, 		[JOYPAD_REGISTER]
+	LDH		A, 		[JOYPAD_REGISTER]
+	LDH		A, 		[JOYPAD_REGISTER]	; get the result back (takes even more cycles?)
+	CPL							;	 bit-flip the result
 	AND		PAD_OUTPUT_MASK		; mask out the output bits
 	OR		B					; add it to the other button bits
-	LD		B, A			; put it back in c
+	LD		B, 		A		; put it back in c
 
 	; calculate the buttons that went down since last joypad read
-	LD		A, [joypad_held]	; grab last button bits
+	LD		A, 		[joypad_held]	; grab last button bits
 	CPL							; invert them
 	AND		B					; combine the bits with current bits
 	LD		[joypad_down], A	; store just-went-down button bits
 
-	LD		A, B
+	LD		A, 		B
 	LD      [joypad_held], A	; store the held down button bits
 
-	LD		A, $30       ; reset joypad
+	LD		A,	 	$30	; reset joypad
   LDH		[JOYPAD_REGISTER], A
 
 	RET
@@ -385,29 +439,30 @@ READ_INPUT::
 ; vblank routine - do all graphical changes here while the display is not drawing
 ; Code from "Game Boy test 4" from Doug Lanford (opus@dnai.com)
 ;--------------------------------------------------------------------------------
-VBlankFunc::
+VBLANK::
 	DI		; disable interrupts
 	PUSH	AF
 
 	; is it time to scroll yet?
 	AND		%00000001
-	JR		NZ, .vblank_sprite_DMA	; only scroll ever other vblank
+	JR		NZ, 	.VBLANK_SPRITE_DMA	; only scroll ever other vblank
 
-; load the sprite attrib table to OAM memory
-.vblank_sprite_DMA
+; DMA transfer == Copy data (sprite attributes) from RAM to OAM
+; When copying to VRAM must wait for VBlank (other destinations must DI/EI)
+.VBLANK_SPRITE_DMA
 	; Unused but left as sample of how update a sprite
-	;LD		A, $c0				; dma from $c000 (where I have my local copy of the attrib table)
+	;LD			A, $c0				; dma from $c000 (where I have my local copy of the attrib table)
 	;LDH		[DMA_REGISTER], A	; start the dma
 
-	LD		A, $28		; wait for 160 microsec (using a loop)
-.vblank_dma_wait
+	LD		A, 		$28		; wait for 160 microsec (using a loop)
+.VBLANK_DMA_WAIT
 	DEC		A
-	JR		NZ, .vblank_dma_wait
+	JR		NZ, 	.VBLANK_DMA_WAIT
 
-	LD		HL, SPRITE_ATTRIB_MEM_LOC
+	LD		HL, 	SPRITE_ATTRIB_MEM_LOC
 
 	; set the vblank occured flag
-	LD		A, 1
+	LD		A, 		1
 	LD		[vblank_flag], A
 
 	POP AF
@@ -418,36 +473,36 @@ VBlankFunc::
 HANDLE_INPUT::
 	PUSH	AF
 
-;.check_a_button
-	LD		A, [joypad_down]
+;.CHECK_A_BUTTON
+	LD		A, 		[joypad_down]
 	BIT		A_BUTTON, A
-	JR		Z, .check_b_button
+	JR		Z, 		.CHECK_B_BUTTON
 
 	; a button down - previous slide
-	LD		A, [current_slide]
+	LD		A, 		[current_slide]
 	SUB 	0
-	JP 		Z, .check_b_button 		; Already were at first slide, don't go back more
+	JP 		Z, 		.CHECK_B_BUTTON 		; Already were at first slide, don't go back more
 	DEC 	A
 	LD		[current_slide], A
 	CALL 	LOAD_MAP
 
-.check_b_button
-	LD		A, [joypad_down]
+.CHECK_B_BUTTON
+	LD		A, 		[joypad_down]
 	BIT		B_BUTTON, A
-	JR		Z, .done_checking_joypad
+	JR		Z, 		.DONE_CHECKING_JOYPAD
 
 	; b button down - next slide
-	LD		A, [current_slide]
-	LD 		B, A
-	LD    A, [total_slides]
+	LD		A, 		[current_slide]
+	LD 		B, 		A
+	LD    A, 		[total_slides]
 	SUB 	B
-	JP 		Z, .done_checking_joypad	; Already were at last slide, don't advance
-	LD 		A, B
+	JP 		Z, 		.DONE_CHECKING_JOYPAD	; Already were at last slide, don't advance
+	LD 		A, 		B
 	INC 	A
 	LD		[current_slide], A
 	CALL 	LOAD_MAP
 
-.done_checking_joypad
+.DONE_CHECKING_JOYPAD
 	POP		AF
 	RET
 
@@ -468,6 +523,14 @@ INCLUDE	"SLIDE_06.INC"
 INCLUDE	"SLIDE_07.INC"
 INCLUDE	"SLIDE_08.INC"
 INCLUDE	"SLIDE_09.INC"
+INCLUDE	"SLIDE_10.INC"
+INCLUDE	"SLIDE_11.INC"
+INCLUDE	"SLIDE_12.INC"
+INCLUDE	"SLIDE_13.INC"
+INCLUDE	"SLIDE_14.INC"
+INCLUDE	"SLIDE_15.INC"
+INCLUDE	"SLIDE_16.INC"
+INCLUDE	"SLIDE_17.INC"
 INCLUDE	"SLIDE_99.INC"
 
 

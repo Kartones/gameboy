@@ -1,0 +1,12 @@
+Interrupts
+
+IME: Master enable
+
+Upon interrupt:
+-PC stored at stack
+-JP to Int strt addr
+
+RET: Just returns,
+ no INT state change
+RETI: Returns and
+ enables INT

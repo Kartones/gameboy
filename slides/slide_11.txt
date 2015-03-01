@@ -1,0 +1,16 @@
+Memory
+
+$0000
+Interrupt & rst
+
+$0100
+ROM data
+
+$0150
+User Program 32KB
+
+$8000
+Bank 0 Char data
+
+$9800 - $A000
+???

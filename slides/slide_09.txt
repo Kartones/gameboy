@@ -1,11 +1,13 @@
-Memory
+Registers
 
-$FF00
-Port/Mode, control
-& sound registers
+A,B,C,D,E,H,L
+PC,SP,F,IE,IF
 
-$FF80
-Stack RAM (127bit)
+16 bit grouping:
+BC, DE, HL
 
-$FFFF
-- Memory end -
+2 clocks: M, T
+M = cycle
+T = M-times
+
+1 instruction = 4M

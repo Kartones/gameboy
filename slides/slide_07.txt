@@ -1,16 +1,15 @@
-Memory
+VBlank
 
-$0000
-Interrupt & rst
+- Paint each row
+ - Pain each col
+ - Move to start
+   of next row
+- Move to [0,0]
 
-$0100
-ROM data
+"Moves" have delays
+Can't paint meantime
+but can do other ops
 
-$0150
-User Program 32KB
-
-$8000
-Bank 0 Char data
-
-$9800 - $A000
-???
+LCD and CPU can't
+ both use VRAM or
+ OAM at same time

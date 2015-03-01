@@ -5,10 +5,4 @@ Graphics
 
 Sprites: 8x8,8x16
  Max. 40 in screen
- Max. 40 per row
-
-Concepts:
- - Map/BG
- - OBJ/Sprite
- - X/Y Position
- - X/Y Scroll
+ Max. 10 per row

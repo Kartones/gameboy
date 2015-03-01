@@ -1,9 +1,7 @@
-Objects - Sprites
+Tiles
 
-X coord
-Y coord
-Tile number
-Attr data:
-- Palette
-- X-Flipped
-- Y-Flipped
+8x8 bytes per tile
+
+Contains ony color
+ number (palette
+ can change)

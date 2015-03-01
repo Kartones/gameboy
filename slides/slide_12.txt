@@ -1,0 +1,16 @@
+Memory
+
+$A000
+Expansion RAM 8KB
+
+$C000
+Working Ram 8KB
+
+$E000 - $FE00
+Internal, don't use
+
+$FE00
+OAM (40 OBJ)
+
+$FE00 - $FF00
+Internal, don't use
