@@ -1,3 +1,5 @@
+; TODO: Check why this code fails. From slide 3 onwards BGs are not drawn correctly
+; Suspects are either some interrupt or VBlank messing up
 
 LOAD_MAP::
 	; Idea is jump to [INTRO_SLIDE_DATA + 20*20 * [current_slide] ]

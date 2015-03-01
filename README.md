@@ -1,17 +1,16 @@
 ﻿GBSlides
 ========
 
-# Intro #
-
-**Note:** Slides/Content is not fully done yet, but the viewer works (although bugs might exist).
+# Description #
 
 GBSlides is a simple GameBoy Powerpoint-like slides viewer I built to learn how programming the GameBoy in Z80 Assembler was
 back in the early 90s. As building a game is quite time consuming and I was going to give a talk at an event, I decided to
 give the talk using a GB emulator and tool built by me.
 
-The result is `gbslides.asm` file, a small slide viewer. It uses gameboy Maps/Backgrounds to load slides on them and display one
+The result is `gbslides.asm` file. It uses gameboy Maps/Backgrounds to load slides on them and display one
 at a time. As editing inside a Tile Editor like GBTB is tiring for simple text, I also made a script that transforms from
-plain text files to .INC files that have Assembler code defining the backgrounds (BG had no "files", everything was inside the ROM).
+plain text files to .INC files that have Assembler code defining the backgrounds (GB had no "files", everything was inside the ROM
+as binary data).
 
 Small demo:
 ![Sample presentation inside VisualBoyAdvance](http://www.comomonos.com/up/wip_25_feb_2015.gif)
