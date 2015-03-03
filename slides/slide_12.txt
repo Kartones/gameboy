@@ -1,16 +1,17 @@
 Memory
 
-$A000
-Expansion RAM 8KB
+$9800 - $9FFF
+BG Map data
 
-$C000
+$A000 - $BFFF
+Expansion RAM 8KB
+(if available)
+
+$C000 - $CFFF
 Working Ram 8KB
 
-$E000 - $FE00
+$D000 - $FDFF
 Internal, don't use
 
-$FE00
-OAM (40 OBJ)
-
-$FE00 - $FF00
-Internal, don't use
+$FE00 - $FE9F
+OAM data (40 OBJs)

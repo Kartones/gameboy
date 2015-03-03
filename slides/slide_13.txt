@@ -1,11 +1,15 @@
 Memory
 
-$FF00
+$FEA0 - $FEFF
+Internal, don't use
+
+$FF00 - $FF7F
 Port/Mode, control
 & sound registers
 
-$FF80
+$FF80 - $FFFE
 Stack RAM (127bit)
 
 $FFFF
-- Memory end -
+IE Flag
+& Memory end

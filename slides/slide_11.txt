@@ -1,16 +1,18 @@
 Memory
 
-$0000
+$0000 - $00FF
 Interrupt & rst
 
-$0100
-ROM data
+$0100 - $014F
+ROM header data
 
-$0150
-User Program 32KB
+$0150 - $3FFF
+Cartidge ROM bank 0
+16KB
 
-$8000
-Bank 0 Char data
+$4000 - $7FFF
+Cartidge ROM bank 1
+16KB (switchable)
 
-$9800 - $A000
-???
+$8000 - $97FF
+Tile data
