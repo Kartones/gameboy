@@ -1,7 +1,7 @@
 VBlank
 
 - Paint each row
- - Pain each col
+ - Paint each col
  - Move to start
    of next row
 - Move to [0,0]
