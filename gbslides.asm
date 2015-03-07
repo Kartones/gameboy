@@ -212,7 +212,7 @@ LOAD_TILES::
 	LD		DE, 	TILES_MEM_LOC_1
 	LD		BC,		77*16		; 77 tiles x 16 bytes each
 LOAD_TILES_LOOP::
-	LDH		a, 		[LCDC_STATUS]	; get the status
+	LDH		A, 		[LCDC_STATUS]	; get the status
 	AND		SPRITE_MODE			; don't write during sprite and transfer modes
 	JP		NZ, 	LOAD_TILES_LOOP
 	LD		A, 		[HL+]		; get byte from tile data
@@ -443,13 +443,8 @@ VBLANK::
 	DI		; disable interrupts
 	PUSH	AF
 
-	; is it time to scroll yet?
-	AND		%00000001
-	JR		NZ, 	.VBLANK_SPRITE_DMA	; only scroll ever other vblank
-
 ; DMA transfer == Copy data (sprite attributes) from RAM to OAM
 ; When copying to VRAM must wait for VBlank (other destinations must DI/EI)
-.VBLANK_SPRITE_DMA
 	; Unused but left as sample of how update a sprite
 	;LD			A, $c0				; dma from $c000 (where I have my local copy of the attrib table)
 	;LDH		[DMA_REGISTER], A	; start the dma
@@ -459,7 +454,7 @@ VBLANK::
 	DEC		A
 	JR		NZ, 	.VBLANK_DMA_WAIT
 
-	LD		HL, 	SPRITE_ATTRIB_MEM_LOC
+	;LD		HL, 	SPRITE_ATTRIB_MEM_LOC
 
 	; set the vblank occured flag
 	LD		A, 		1
@@ -495,7 +490,7 @@ HANDLE_INPUT::
 	LD		A, 		[current_slide]
 	LD 		B, 		A
 	LD    A, 		[total_slides]
-	SUB 	B
+	SUB 	B 		; Can only SUB something from A
 	JP 		Z, 		.DONE_CHECKING_JOYPAD	; Already were at last slide, don't advance
 	LD 		A, 		B
 	INC 	A
