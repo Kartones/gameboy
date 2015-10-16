@@ -13,7 +13,7 @@ plain text files to .INC files that have Assembler code defining the backgrounds
 as binary data).
 
 Small demo:
-![Sample presentation inside VisualBoyAdvance](http://www.comomonos.com/up/wip_25_feb_2015.gif)
+![Sample presentation inside VisualBoyAdvance](http://www.comomonos.com/up/img/wip_25_feb_2015.gif)
 
 The "real" presentation is available at:
 [slides.kartones.net](http://slides.kartones.net/023.htm)
