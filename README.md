@@ -12,7 +12,7 @@ at a time. As editing inside a Tile Editor like GBTB is tiring for simple text, 
 plain text files to .INC files that have Assembler code defining the backgrounds (GB had no "files", everything was inside the ROM
 as binary data).
 
-Small demo:
+Small demo:<br />
 ![Sample presentation inside VisualBoyAdvance](http://images.kartones.net/posts/screenshots/wip_25_feb_2015.gif)
 
 The "real" presentation is available at:
