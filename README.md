@@ -13,13 +13,13 @@ plain text files to .INC files that have Assembler code defining the backgrounds
 as binary data).
 
 Small demo:<br />
-![Sample presentation inside VisualBoyAdvance](http://images.kartones.net/posts/screenshots/wip_25_feb_2015.gif)
+![Sample presentation inside VisualBoyAdvance](https://images.kartones.net/posts/screenshots/wip_25_feb_2015.gif)
 
 The "real" presentation is available at:
-[slides.kartones.net](http://slides.kartones.net/023.htm)
+[slides.kartones.net](https://slides.kartones.net/023.htm)
 
 And as was hard to gather all tools and documentation, I've setup a zip containing a nice development toolset at:
-[kartones.net/Downloads/gbdevpack.zip](http://kartones.net/Downloads/gbdevpack.zip)
+[kartones.net/Downloads/gbdevpack.zip](https://kartones.net/Downloads/gbdevpack.zip)
 
 # Usage #
 
