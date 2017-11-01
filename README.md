@@ -19,7 +19,7 @@ The "real" presentation is available at:
 [slides.kartones.net](https://slides.kartones.net/023.html)
 
 And as was hard to gather all tools and documentation, I've setup a zip containing a nice development toolset at:
-[kartones.net/Downloads/gbdevpack.zip](https://kartones.net/Downloads/gbdevpack.zip)
+[https://kartones.net/downloads/gbdevpack.zip](https://kartones.net/downloads/gbdevpack.zip)
 
 # Usage #
 
