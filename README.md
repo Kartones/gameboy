@@ -16,7 +16,7 @@ Small demo:<br />
 ![Sample presentation inside VisualBoyAdvance](https://images.kartones.net/posts/screenshots/wip_25_feb_2015.gif)
 
 The "real" presentation is available at:
-[slides.kartones.net](https://slides.kartones.net/023.htm)
+[slides.kartones.net](https://slides.kartones.net/023.html)
 
 And as was hard to gather all tools and documentation, I've setup a zip containing a nice development toolset at:
 [kartones.net/Downloads/gbdevpack.zip](https://kartones.net/Downloads/gbdevpack.zip)
